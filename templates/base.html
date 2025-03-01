@@ -1,263 +1,278 @@
-<!DOCTYPE html>
-<html lang="en" class="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Hill Gradient Calculator{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Mapbox CSS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-    <!-- HTMX for dynamic content -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <!-- Chart.js for data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <style>
-        #map { height: 600px; width: 100%; }
-        
-        :root {
-            --bg-gradient-light: linear-gradient(45deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 100%);
-            --bg-gradient-dark: linear-gradient(45deg, rgba(30,41,59,0.8) 0%, rgba(30,41,59,0.4) 100%);
-            --primary-color: #3b82f6;
-            --primary-dark: #2563eb;
-        }
-        
-        /* Mountain background with parallax effect */
-        .mountain-background {
-            position: relative;
-        }
-        
-        .mountain-background::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("{{ url_for('static', filename='images/contours.png') }}");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed;
-            z-index: -1;
-        }
-        
-        /* Light mode styles */
-        html.light .mountain-background::before {
-            filter: saturate(0.8) opacity(0.7);
-        }
-        
-        html.light .gradient-overlay {
-            background: var(--bg-gradient-light);
-        }
-        
-        html.light .nav-bg {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        html.light .text-theme-primary {
-            color: #1e293b;
-        }
-        
-        html.light .bg-theme-card {
-            background-color: rgba(255, 255, 255, 0.95);
-        }
-        
-        html.light .text-theme-secondary {
-            color: #64748b;
-        }
-        
-        /* Dark mode styles */
-        html.dark .mountain-background::before {
-            filter: brightness(0.3) saturate(0.6) opacity(0.8);
-        }
-        
-        html.dark .gradient-overlay {
-            background: var(--bg-gradient-dark);
-        }
-        
-        html.dark .nav-bg {
-            background-color: rgba(15, 23, 42, 0.9);
-        }
-        
-        html.dark .text-theme-primary {
-            color: #f8fafc;
-        }
-        
-        html.dark .bg-theme-card {
-            background-color: rgba(30, 41, 59, 0.95);
-        }
-        
-        html.dark .text-theme-secondary {
-            color: #94a3b8;
-        }
-        
-        html.dark .border-theme {
-            border-color: #334155;
-        }
-        
-        /* Keep the gradient overlay */
-        .gradient-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        /* Elevation pattern overlay */
-        .elevation-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("{{ url_for('static', filename='images/contour-pattern.svg') }}");
-            background-size: 500px;
-            background-repeat: repeat;
-            opacity: 0.07;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        main, footer {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Theme toggle button */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.2s;
-        }
-        
-        html.light .theme-toggle {
-            background-color: #f1f5f9;
-            color: #0f172a;
-        }
-        
-        html.dark .theme-toggle {
-            background-color: #334155;
-            color: #f8fafc;
-        }
-        
-        html.light .dark-icon {
-            display: block;
-        }
-        
-        html.light .light-icon {
-            display: none;
-        }
-        
-        html.dark .dark-icon {
-            display: none;
-        }
-        
-        html.dark .light-icon {
-            display: block;
-        }
-        
-        /* Animation for gradient cards */
-        .gradient-card {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .gradient-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .gradient-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
-        }
-    </style>
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hill Gradient Calculator{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Mapbox CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <!-- HTMX for dynamic content -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        #map { height: 600px; width: 100%; }
+        
+        :root {
+            --bg-gradient-light: linear-gradient(45deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 100%);
+            --bg-gradient-dark: linear-gradient(45deg, rgba(30,41,59,0.8) 0%, rgba(30,41,59,0.4) 100%);
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+        }
+        
+        /* Pixel Art Background with Animation */
+        .mountain-background {
+            position: relative;
+        }
+        
+        .mountain-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3498db; /* Light blue background for light mode */
+            z-index: -2;
+        }
+        
+        /* Pixelated mountain canvas */
+        #pixel-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        
+        /* Light mode styles */
+        html.light .mountain-background::before {
+            background-color: #3498db; /* Light blue for light mode */
+        }
+        
+        html.light .gradient-overlay {
+            background: var(--bg-gradient-light);
+        }
+        
+        html.light .nav-bg {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        html.light .text-theme-primary {
+            color: #1e293b;
+        }
+        
+        html.light .bg-theme-card {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        html.light .text-theme-secondary {
+            color: #64748b;
+        }
+        
+        /* Dark mode styles */
+        html.dark .mountain-background::before {
+            background-color: #1a2639; /* Dark blue for dark mode */
+        }
+        
+        html.dark .gradient-overlay {
+            background: var(--bg-gradient-dark);
+        }
+        
+        html.dark .nav-bg {
+            background-color: rgba(15, 23, 42, 0.9);
+        }
+        
+        html.dark .text-theme-primary {
+            color: #f8fafc;
+        }
+        
+        html.dark .bg-theme-card {
+            background-color: rgba(30, 41, 59, 0.95);
+        }
+        
+        html.dark .text-theme-secondary {
+            color: #94a3b8;
+        }
+        
+        html.dark .border-theme {
+            border-color: #334155;
+        }
+        
+        /* Keep the gradient overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        main, footer {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Theme toggle button */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+        
+        html.light .theme-toggle {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        
+        html.dark .theme-toggle {
+            background-color: #334155;
+            color: #f8fafc;
+        }
+        
+        html.light .dark-icon {
+            display: block;
+        }
+        
+        html.light .light-icon {
+            display: none;
+        }
+        
+        html.dark .dark-icon {
+            display: none;
+        }
+        
+        html.dark .light-icon {
+            display: block;
+        }
+        
+        /* Animation for gradient cards */
+        .gradient-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .gradient-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+        }
+        
+        /* Pixel art UI elements */
+        .pixel-border {
+            box-shadow: 0 0 0 2px #000, 
+                        inset 0 0 0 1px #000;
+            image-rendering: pixelated;
+        }
+        
+        .pixel-button {
+            position: relative;
+            padding: 0.5rem 1rem;
+            box-shadow: inset -2px -2px 0 0 rgba(0,0,0,0.6),
+                        inset 2px 2px 0 0 rgba(255,255,255,0.6);
+            transition: all 0.1s;
+        }
+        
+        .pixel-button:active {
+            box-shadow: inset 2px 2px 0 0 rgba(0,0,0,0.6),
+                        inset -2px -2px 0 0 rgba(255,255,255,0.6);
+            transform: translateY(2px);
+        }
+    </style>
     {% if mapbox_token %}
     <meta name="mapbox-token" content="{{ mapbox_token }}">
     {% endif %}
-    {% block extra_head %}{% endblock %}
-</head>
-<body class="mountain-background min-h-screen flex flex-col">
-    <div class="gradient-overlay"></div>
-    <div class="elevation-pattern"></div>
-    {% include 'components/nav.html' %}
-    <main class="w-full flex-grow">
-        {% block content %}{% endblock %}
-    </main>
-    <footer class="nav-bg shadow mt-8">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <p class="text-center text-theme-secondary">Ekcediel Media GmbH &copy; 2025</p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
-                    <a href="/about" class="text-theme-secondary hover:text-blue-500 transition-colors">About</a>
-                    <a href="/statistics" class="text-theme-secondary hover:text-blue-500 transition-colors">Statistics</a>
-                    <button id="theme-toggle" class="theme-toggle flex items-center">
-                        <!-- Moon icon for dark mode -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark-icon" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                        </svg>
-                        <!-- Sun icon for light mode -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 light-icon" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Mapbox JS -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script>
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            // Check for saved theme preference or use system preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.documentElement.className = savedTheme;
-            } else {
-                // Check for system preference
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.className = 'dark';
-                }
-            }
-            
-            // Toggle theme on button click
-            themeToggle.addEventListener('click', function() {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.classList.add('light');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.classList.remove('light');
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-                
-                // If map exists, update its style based on theme
-                if (window.mapboxMap) {
-                    const isDark = document.documentElement.classList.contains('dark');
-                    window.mapboxMap.setStyle(isDark ? 
-                        'mapbox://styles/mapbox/dark-v10' : 
-                        'mapbox://styles/mapbox/outdoors-v12');
-                }
-            });
-        });
-    </script>
-    {% block scripts %}{% endblock %}
-</body>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="mountain-background min-h-screen flex flex-col">
+    <div class="gradient-overlay"></div>
+    <canvas id="pixel-canvas"></canvas>
+    {% include 'components/nav.html' %}
+    <main class="w-full flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="nav-bg shadow mt-8">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-center text-theme-secondary">Ekcediel Media GmbH &copy; 2025</p>
+                <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                    <a href="/about" class="text-theme-secondary hover:text-blue-500 transition-colors">About</a>
+                    <a href="/statistics" class="text-theme-secondary hover:text-blue-500 transition-colors">Statistics</a>
+                    <button id="theme-toggle" class="theme-toggle flex items-center">
+                        <!-- Moon icon for dark mode -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                        </svg>
+                        <!-- Sun icon for light mode -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 light-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Mapbox JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pixelart-bg.js') }}"></script>
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            // Check for saved theme preference or use system preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.className = savedTheme;
+            } else {
+                // Check for system preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.className = 'dark';
+                }
+            }
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                
+                // If map exists, update its style based on theme
+                if (window.mapboxMap) {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    window.mapboxMap.setStyle(isDark ? 
+                        'mapbox://styles/mapbox/dark-v10' : 
+                        'mapbox://styles/mapbox/outdoors-v12');
+                }
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
 </html>

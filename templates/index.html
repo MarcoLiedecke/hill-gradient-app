@@ -1,375 +1,378 @@
-{% extends "base.html" %}
-
-{% block title %}Danish Hill Climbs | Find Your Perfect Challenge{% endblock %}
-
-{% block content %}
-<main class="w-full overflow-hidden relative py-6">
-    <!-- Hero Section -->
-    <div class="container mx-auto px-4">
-        <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
-            <!-- Map background with overlay -->
-            <div class="absolute inset-0 z-0">
-                <div id="hero-map" class="w-full h-full"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
-            </div>
-            
-            <!-- Content -->
-            <div class="relative z-10 flex flex-col md:flex-row items-center py-12 md:py-16 px-8 md:px-12">
-                <div class="md:w-1/2 mb-8 md:mb-0">
-                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-4">
-                        <span class="text-blue-500">Elevate</span> Your <br>Cycling Experience
-                    </h1>
-                    <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-lg">
-                        Discover Denmark's most challenging and scenic hill climbs for cycling enthusiasts.
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="/map" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition-colors flex items-center gap-2">
-                            Explore Map
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#top-hills" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-6 py-3 rounded-lg text-lg font-semibold transition-colors">
-                            View Top Hills
-                        </a>
-                    </div>
-                </div>
-                <div class="md:w-1/2">
-                    <!-- Search Box -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Find Your Challenge</h2>
-                        <form action="/search" method="get" class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                                <input type="text" name="location" placeholder="City or region in Denmark" class="w-full px-4 py-2 rounded-lg border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
-                                <select name="difficulty" class="w-full px-4 py-2 rounded-lg border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500">
-                                    <option value="">Any difficulty</option>
-                                    <option value="easy">Easy (0-4%)</option>
-                                    <option value="moderate">Moderate (4-8%)</option>
-                                    <option value="challenging">Challenging (8-12%)</option>
-                                    <option value="extreme">Extreme (12%+)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Climb Length</label>
-                                <div class="flex items-center gap-4">
-                                    <input type="range" name="length" min="0" max="10" step="0.5" value="2" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                    <span class="text-gray-700 min-w-[40px]">2 km</span>
-                                </div>
-                            </div>
-                            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-3 text-lg font-semibold transition-colors">
-                                Find Hills
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% extends "base.html" %}
+
+{% block title %}Danish Hill Climbs | Find Your Perfect Challenge{% endblock %}
+
+{% block content %}
+<main class="w-full overflow-hidden relative py-6">
+    <!-- Hero Section -->
+    <div class="container mx-auto px-4">
+        <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
+            <!-- Map background with overlay -->
+            <div class="absolute inset-0 z-0">
+                <div id="hero-map" class="w-full h-full"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+            </div>
+            
+            <!-- Content -->
+            <div class="relative z-10 flex flex-col md:flex-row items-center py-12 md:py-16 px-8 md:px-12">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-4">
+                        <span class="text-blue-500">Elevate</span> Your <br>Cycling Experience
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-lg">
+                        Discover Denmark's most challenging and scenic hill climbs for cycling enthusiasts.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="/map" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold transition-colors flex items-center gap-2">
+                            Explore Map
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#top-hills" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-6 py-3 rounded-lg text-lg font-semibold transition-colors">
+                            View Top Hills
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <!-- Search Box -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Find Your Challenge</h2>
+                        <form action="/search" method="get" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                <input type="text" name="location" placeholder="City or region in Denmark" class="w-full px-4 py-2 rounded-lg border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
+                                <select name="difficulty" class="w-full px-4 py-2 rounded-lg border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500">
+                                    <option value="">Any difficulty</option>
+                                    <option value="easy">Easy (0-4%)</option>
+                                    <option value="moderate">Moderate (4-8%)</option>
+                                    <option value="challenging">Challenging (8-12%)</option>
+                                    <option value="extreme">Extreme (12%+)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Climb Length</label>
+                                <div class="flex items-center gap-4">
+                                    <input type="range" name="length" min="0" max="10" step="0.5" value="2" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <span class="text-gray-700 min-w-[40px]">2 km</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-3 text-lg font-semibold transition-colors">
+                                Find Hills
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700">Total Hills</h3>
+                        <p class="text-3xl font-bold text-blue-500">257</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Catalogued and rated</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700">Total Length</h3>
+                        <p class="text-3xl font-bold text-blue-500">100.43 km</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Of climbing roads</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700">Max Gradient</h3>
+                        <p class="text-3xl font-bold text-blue-500">89.91%</p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Steepest section</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700">Avg Gradient</h3>
+                        <p class="text-3xl font-bold text-blue-500">4.59%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Across all hills</p>
+            </div>
+        </div>
+        
+        <!-- Featured Climbs -->
+        <div class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Featured Climbs</h2>
+                <a href="/map" class="text-blue-500 hover:text-blue-700 font-medium flex items-center">
+                    View All
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Featured Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {% for road in featured_roads %}
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-xl">
+                    <div class="relative h-48">
+                        <img src="{{ road.image|default(url_for('static', filename='images/default-hill.jpg')) }}" 
+                             class="w-full h-full object-cover" 
+                             alt="{{ road.name|default('Hill') }}">
+                        <div class="absolute top-3 right-3 bg-white rounded-full shadow-md p-2">
+                            <span class="flex items-center justify-center h-10 w-10 text-lg font-bold {% if road.gradient > 8 %}text-red-500{% elif road.gradient > 5 %}text-yellow-500{% else %}text-green-500{% endif %}">
+                                {{ road.gradient|default('0') }}%
+                            </span>
+                        </div>
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <h3 class="text-lg font-bold text-white">{{ road.name }}</h3>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-1 text-yellow-500">
+                                {% for i in range(5) %}
+                                    {% if i < road.rating|default(0)|int %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="text-gray-600">{{ road.length|default('0') }} km</span>
+                        </div>
+                        <div class="mt-3 flex items-center text-sm text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {{ road.location|default('Location') }}
+                        </div>
+                        <div class="mt-4">
+                            <button 
+                                onclick="showOnMap({{ road.id }})" 
+                                class="w-full py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg font-medium transition-colors"
+                            >
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Top 10 Hills Section -->
+        <div id="top-hills" class="mb-12 scroll-mt-20">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Top 10 Danish Hills</h2>
+                
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <button 
+                        class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors"
+                        data-filter="longest">
+                        Longest Hills
+                    </button>
+                    <button 
+                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors"
+                        data-filter="highest">
+                        Highest Hills
+                    </button>
+                    <button 
+                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors"
+                        data-filter="steepest">
+                        Steepest Hills
+                    </button>
+                </div>
+                
+                <!-- Top 10 List -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Length</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Height</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Gradient</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for hill in top_hills %}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ loop.index }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ hill.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">{{ hill.length }} km</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">{{ hill.height }} m</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if hill.gradient > 8 %}bg-red-100 text-red-800{% elif hill.gradient > 5 %}bg-yellow-100 text-yellow-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                        {{ hill.gradient }}%
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                    <button 
+                                        onclick="showOnMap({{ hill.id }})" 
+                                        class="text-blue-600 hover:text-blue-900 font-medium"
+                                    >
+                                        Show on Map
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 mb-12 text-white">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Ready to Discover Your Next Challenge?</h2>
+                <p class="text-xl mb-6 text-blue-100">
+                    Explore all our mapped hill climbs and find the perfect route for your next ride.
+                </p>
+                <a href="/map" class="inline-block bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                    View Interactive Map
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_head %}
+<!-- Mapbox CSS -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+<!-- Mapbox JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize hero map (small preview map)
+        const mapboxToken = document.querySelector('meta[name="mapbox-token"]')?.getAttribute('content') || 
+                     'pk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw';
         
-        <!-- Statistics Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700">Total Hills</h3>
-                        <p class="text-3xl font-bold text-blue-500">257</p>
-                    </div>
-                    <div class="bg-blue-100 p-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Catalogued and rated</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700">Total Length</h3>
-                        <p class="text-3xl font-bold text-blue-500">100.43 km</p>
-                    </div>
-                    <div class="bg-green-100 p-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Of climbing roads</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700">Max Gradient</h3>
-                        <p class="text-3xl font-bold text-blue-500">89.91%</p>
-                    </div>
-                    <div class="bg-red-100 p-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Steepest section</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 transform transition-transform hover:-translate-y-1 hover:shadow-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700">Avg Gradient</h3>
-                        <p class="text-3xl font-bold text-blue-500">4.59%</p>
-                    </div>
-                    <div class="bg-yellow-100 p-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Across all hills</p>
-            </div>
-        </div>
-        
-        <!-- Featured Climbs -->
-        <div class="mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Featured Climbs</h2>
-                <a href="/map" class="text-blue-500 hover:text-blue-700 font-medium flex items-center">
-                    View All
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-            
-            <!-- Featured Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {% for road in featured_roads %}
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-xl">
-                    <div class="relative h-48">
-                        <img src="{{ road.image|default(url_for('static', filename='images/default-hill.jpg')) }}" 
-                             class="w-full h-full object-cover" 
-                             alt="{{ road.name|default('Hill') }}">
-                        <div class="absolute top-3 right-3 bg-white rounded-full shadow-md p-2">
-                            <span class="flex items-center justify-center h-10 w-10 text-lg font-bold {% if road.gradient > 8 %}text-red-500{% elif road.gradient > 5 %}text-yellow-500{% else %}text-green-500{% endif %}">
-                                {{ road.gradient|default('0') }}%
-                            </span>
-                        </div>
-                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                            <h3 class="text-lg font-bold text-white">{{ road.name }}</h3>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-1 text-yellow-500">
-                                {% for i in range(5) %}
-                                    {% if i < road.rating|default(0)|int %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    {% else %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <span class="text-gray-600">{{ road.length|default('0') }} km</span>
-                        </div>
-                        <div class="mt-3 flex items-center text-sm text-gray-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            {{ road.location|default('Location') }}
-                        </div>
-                        <div class="mt-4">
-                            <button 
-                                onclick="showOnMap({{ road.id }})" 
-                                class="w-full py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg font-medium transition-colors"
-                            >
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <!-- Top 10 Hills Section -->
-        <div id="top-hills" class="mb-12 scroll-mt-20">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Top 10 Danish Hills</h2>
-                
-                <!-- Filter Buttons -->
-                <div class="flex flex-wrap gap-3 mb-6">
-                    <button 
-                        class="px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors"
-                        data-filter="longest">
-                        Longest Hills
-                    </button>
-                    <button 
-                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors"
-                        data-filter="highest">
-                        Highest Hills
-                    </button>
-                    <button 
-                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors"
-                        data-filter="steepest">
-                        Steepest Hills
-                    </button>
-                </div>
-                
-                <!-- Top 10 List -->
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Length</th>
-                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Height</th>
-                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Gradient</th>
-                                <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            {% for hill in top_hills %}
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ loop.index }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ hill.name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">{{ hill.length }} km</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">{{ hill.height }} m</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if hill.gradient > 8 %}bg-red-100 text-red-800{% elif hill.gradient > 5 %}bg-yellow-100 text-yellow-800{% else %}bg-green-100 text-green-800{% endif %}">
-                                        {{ hill.gradient }}%
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    <button 
-                                        onclick="showOnMap({{ hill.id }})" 
-                                        class="text-blue-600 hover:text-blue-900 font-medium"
-                                    >
-                                        Show on Map
-                                    </button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Call to Action -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-8 mb-12 text-white">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-4">Ready to Discover Your Next Challenge?</h2>
-                <p class="text-xl mb-6 text-blue-100">
-                    Explore all our mapped hill climbs and find the perfect route for your next ride.
-                </p>
-                <a href="/map" class="inline-block bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
-                    View Interactive Map
-                </a>
-            </div>
-        </div>
-    </div>
-</main>
-{% endblock %}
-
-{% block extra_head %}
-<!-- Mapbox CSS -->
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-{% endblock %}
-
-{% block scripts %}
-<!-- Mapbox JS -->
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize hero map (small preview map)
-        mapboxgl.accessToken = 'Ypk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw';
-        
-        const heroMap = new mapboxgl.Map({
-            container: 'hero-map',
-            style: 'mapbox://styles/mapbox/outdoors-v12',
-            center: [10.4513, 55.7132], // Center on Denmark
-            zoom: 7,
-            interactive: false // Disable interactions for the hero map
-        });
-        
-        // Handle climb length slider
-        const lengthSlider = document.querySelector('input[name="length"]');
-        const lengthValue = lengthSlider.nextElementSibling;
-        
-        lengthSlider.addEventListener('input', function() {
-            lengthValue.textContent = this.value + ' km';
-        });
-        
-        // Show hills on map function (placeholder for actual implementation)
-        window.showOnMap = function(hillId) {
-            window.location.href = `/map?highlight=${hillId}`;
-        };
-        
-        // Handle top hills filtering
-        document.querySelectorAll('[data-filter]').forEach(button => {
-            button.addEventListener('click', function() {
-                // Update active button style
-                document.querySelectorAll('[data-filter]').forEach(btn => {
-                    btn.classList.replace('bg-blue-500', 'bg-gray-200');
-                    btn.classList.replace('text-white', 'text-gray-700');
-                });
-                this.classList.replace('bg-gray-200', 'bg-blue-500');
-                this.classList.replace('text-gray-700', 'text-white');
-                
-                // Filter type
-                const filterType = this.getAttribute('data-filter');
-                
-                // Fetch filtered data
-                fetch(`/api/top-hills?filter=${filterType}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update table
-                        updateTopHillsTable(data.hills);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching filtered hills:', error);
-                    });
-            });
-        });
-        
-        // Function to update top hills table
-        function updateTopHillsTable(hills) {
-            const tbody = document.querySelector('table tbody');
-            tbody.innerHTML = '';
-            
-            hills.forEach((hill, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-gray-50 transition-colors';
-                
-                tr.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${hill.name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.length} km</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.height} m</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${hill.gradient > 8 ? 'bg-red-100 text-red-800' : hill.gradient > 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
-                            ${hill.gradient}%
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                        <button 
-                            onclick="showOnMap(${hill.id})" 
-                            class="text-blue-600 hover:text-blue-900 font-medium"
-                        >
-                            Show on Map
-                        </button>
-                    </td>
-                `;
-                
-                tbody.appendChild(tr);
-            });
-        }
-    });
-</script>
+        mapboxgl.accessToken = mapboxToken;
+        
+        const heroMap = new mapboxgl.Map({
+            container: 'hero-map',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: [10.4513, 55.7132], // Center on Denmark
+            zoom: 7,
+            interactive: false // Disable interactions for the hero map
+        });
+        
+        // Handle climb length slider
+        const lengthSlider = document.querySelector('input[name="length"]');
+        const lengthValue = lengthSlider.nextElementSibling;
+        
+        lengthSlider.addEventListener('input', function() {
+            lengthValue.textContent = this.value + ' km';
+        });
+        
+        // Show hills on map function (placeholder for actual implementation)
+        window.showOnMap = function(hillId) {
+            window.location.href = `/map?highlight=${hillId}`;
+        };
+        
+        // Handle top hills filtering
+        document.querySelectorAll('[data-filter]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active button style
+                document.querySelectorAll('[data-filter]').forEach(btn => {
+                    btn.classList.replace('bg-blue-500', 'bg-gray-200');
+                    btn.classList.replace('text-white', 'text-gray-700');
+                });
+                this.classList.replace('bg-gray-200', 'bg-blue-500');
+                this.classList.replace('text-gray-700', 'text-white');
+                
+                // Filter type
+                const filterType = this.getAttribute('data-filter');
+                
+                // Fetch filtered data
+                fetch(`/api/top-hills?filter=${filterType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update table
+                        updateTopHillsTable(data.hills);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching filtered hills:', error);
+                    });
+            });
+        });
+        
+        // Function to update top hills table
+        function updateTopHillsTable(hills) {
+            const tbody = document.querySelector('table tbody');
+            tbody.innerHTML = '';
+            
+            hills.forEach((hill, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 transition-colors';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${hill.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.length} km</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.height} m</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${hill.gradient > 8 ? 'bg-red-100 text-red-800' : hill.gradient > 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
+                            ${hill.gradient}%
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                        <button 
+                            onclick="showOnMap(${hill.id})" 
+                            class="text-blue-600 hover:text-blue-900 font-medium"
+                        >
+                            Show on Map
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+    });
+</script>
 {% endblock %}
