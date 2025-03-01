@@ -149,6 +149,11 @@ def create_app():
     # Ensure the instance folder exists
     os.makedirs(app.instance_path, exist_ok=True)
     
+    # Make mapbox token available to all templates
+    @app.context_processor
+    def inject_mapbox_token():
+        return {'mapbox_token': app.config.get('MAPBOX_TOKEN', '')}
+    
     # Routes from existing app.py
     @app.route('/')
     def index():
@@ -180,14 +185,11 @@ def create_app():
     @app.route('/map')
     def map_view():
         # Pass Mapbox token to template
-        mapbox_token = app.config.get('MAPBOX_TOKEN', '')
-        return render_template('map.html', mapbox_token=mapbox_token)
+        return render_template('map.html')
     
     @app.route('/hill/<int:hill_id>')
     def hill_detail(hill_id):
-        # Pass Mapbox token to template
-        mapbox_token = app.config.get('MAPBOX_TOKEN', '')
-        return render_template('hill_detail.html', hill_id=hill_id, mapbox_token=mapbox_token)
+        return render_template('hill_detail.html', hill_id=hill_id)
 
     @app.route('/statistics')
     def statistics():

@@ -1,7 +1,4 @@
 // main.js - Integrated with Mapbox
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 // Handle road stats loading (preserve existing htmx functionality)
 document.addEventListener('htmx:afterRequest', function(evt) {
@@ -88,11 +85,19 @@ function initializeHeroMap() {
     // Skip if mapboxgl is not available
     if (typeof mapboxgl === 'undefined') return;
     
-    mapboxgl.accessToken = 'pk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw'; // Replace with your token
+    // Get token from meta tag or use default
+    const mapboxToken = document.querySelector('meta[name="mapbox-token"]')?.getAttribute('content') || 
+                         'pk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw';
+    
+    mapboxgl.accessToken = mapboxToken;
+    
+    // Check theme
+    const isDark = document.documentElement.classList.contains('dark');
+    const mapStyle = isDark ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/outdoors-v12';
     
     const heroMap = new mapboxgl.Map({
         container: 'hero-map',
-        style: 'mapbox://styles/mapbox/outdoors-v12',
+        style: mapStyle,
         center: [10.4513, 55.7132], // Center on Denmark
         zoom: 7,
         interactive: false // Disable interactions for the hero map
@@ -101,11 +106,19 @@ function initializeHeroMap() {
 
 // Function to initialize Mapbox map
 function initializeMapbox() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw'; // Replace with your token
+    // Get token from meta tag or use default
+    const mapboxToken = document.querySelector('meta[name="mapbox-token"]')?.getAttribute('content') || 
+                         'pk.eyJ1IjoibGllZGVja2U5NSIsImEiOiJjbGNxZ3E1YnEwNXV3M3BsaHdqaG0yOG5vIn0.nphFmNshYXzqJDdb_SoGnw';
+    
+    mapboxgl.accessToken = mapboxToken;
+    
+    // Check theme
+    const isDark = document.documentElement.classList.contains('dark');
+    const mapStyle = isDark ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/outdoors-v12';
     
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/outdoors-v12', // Good style for terrain features
+        style: mapStyle,
         center: [10.4513, 55.7132], // Denmark coordinates
         zoom: 7,
         pitch: 30, // Default 3D perspective
@@ -458,7 +471,7 @@ function showRoadDetailsMapbox(roadId) {
             
             roadDetailsEl.innerHTML = `
                 <div class="space-y-3">
-                    <h3 class="text-xl font-bold text-gray-900">${road.name || 'Unnamed Road'}</h3>
+                    <h3 class="text-xl font-bold text-theme-primary">${road.name || 'Unnamed Road'}</h3>
                     <div class="flex items-center">
                         <span class="text-sm py-1 px-2 rounded-full ${road.gradient > 8 ? 'bg-red-100 text-red-800' : road.gradient > 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
                             ${road.gradient.toFixed(1)}% Gradient
@@ -466,20 +479,20 @@ function showRoadDetailsMapbox(roadId) {
                     </div>
                     <div class="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                            <p class="text-gray-600">Length</p>
-                            <p class="font-medium">${(road.length_meters/1000).toFixed(2)} km</p>
+                            <p class="text-theme-secondary">Length</p>
+                            <p class="font-medium text-theme-primary">${(road.length_meters/1000).toFixed(2)} km</p>
                         </div>
                         <div>
-                            <p class="text-gray-600">Elevation Gain</p>
-                            <p class="font-medium">${(road.max_elevation - road.min_elevation).toFixed(1)} m</p>
+                            <p class="text-theme-secondary">Elevation Gain</p>
+                            <p class="font-medium text-theme-primary">${(road.max_elevation - road.min_elevation).toFixed(1)} m</p>
                         </div>
                         <div>
-                            <p class="text-gray-600">Min Elevation</p>
-                            <p class="font-medium">${road.min_elevation.toFixed(1)} m</p>
+                            <p class="text-theme-secondary">Min Elevation</p>
+                            <p class="font-medium text-theme-primary">${road.min_elevation.toFixed(1)} m</p>
                         </div>
                         <div>
-                            <p class="text-gray-600">Max Elevation</p>
-                            <p class="font-medium">${road.max_elevation.toFixed(1)} m</p>
+                            <p class="text-theme-secondary">Max Elevation</p>
+                            <p class="font-medium text-theme-primary">${road.max_elevation.toFixed(1)} m</p>
                         </div>
                     </div>
                 </div>
@@ -515,8 +528,13 @@ function createElevationChart(elevationData) {
     gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
     gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
     
+    // Check if chart already exists
+    if (window.elevationChart) {
+        window.elevationChart.destroy();
+    }
+    
     // Create chart
-    new Chart(ctx, {
+    window.elevationChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -539,10 +557,22 @@ function createElevationChart(elevationData) {
             },
             scales: {
                 x: {
-                    display: false
+                    display: false,
+                    grid: {
+                        color: document.documentElement.classList.contains('dark') ? 
+                               'rgba(100, 116, 139, 0.2)' : 'rgba(200, 200, 200, 0.2)'
+                    }
                 },
                 y: {
-                    beginAtZero: false
+                    beginAtZero: false,
+                    grid: {
+                        color: document.documentElement.classList.contains('dark') ? 
+                               'rgba(100, 116, 139, 0.2)' : 'rgba(200, 200, 200, 0.2)'
+                    },
+                    ticks: {
+                        color: document.documentElement.classList.contains('dark') ? 
+                              '#94a3b8' : '#64748b'
+                    }
                 }
             }
         }
@@ -662,7 +692,7 @@ function showRoadDetails(road) {
     detailsDiv.classList.remove('hidden');
     detailsContent.innerHTML = `
         <div class="space-y-3">
-            <h3 class="text-xl font-bold text-gray-900">${road.name || 'Unnamed Road'}</h3>
+            <h3 class="text-xl font-bold text-theme-primary">${road.name || 'Unnamed Road'}</h3>
             <div class="flex items-center">
                 <span class="text-sm py-1 px-2 rounded-full ${road.gradient > 8 ? 'bg-red-100 text-red-800' : road.gradient > 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
                     ${road.gradient.toFixed(1)}% Gradient
@@ -670,20 +700,20 @@ function showRoadDetails(road) {
             </div>
             <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                    <p class="text-gray-600">Length</p>
-                    <p class="font-medium">${(road.length_meters/1000).toFixed(2)} km</p>
+                    <p class="text-theme-secondary">Length</p>
+                    <p class="font-medium text-theme-primary">${(road.length_meters/1000).toFixed(2)} km</p>
                 </div>
                 <div>
-                    <p class="text-gray-600">Elevation Gain</p>
-                    <p class="font-medium">${(road.max_elevation - road.min_elevation).toFixed(1)} m</p>
+                    <p class="text-theme-secondary">Elevation Gain</p>
+                    <p class="font-medium text-theme-primary">${(road.max_elevation - road.min_elevation).toFixed(1)} m</p>
                 </div>
                 <div>
-                    <p class="text-gray-600">Min Elevation</p>
-                    <p class="font-medium">${road.min_elevation.toFixed(1)} m</p>
+                    <p class="text-theme-secondary">Min Elevation</p>
+                    <p class="font-medium text-theme-primary">${road.min_elevation.toFixed(1)} m</p>
                 </div>
                 <div>
-                    <p class="text-gray-600">Max Elevation</p>
-                    <p class="font-medium">${road.max_elevation.toFixed(1)} m</p>
+                    <p class="text-theme-secondary">Max Elevation</p>
+                    <p class="font-medium text-theme-primary">${road.max_elevation.toFixed(1)} m</p>
                 </div>
             </div>
         </div>
@@ -857,11 +887,11 @@ function updateTopHillsTable(hills) {
         tr.className = 'hover:bg-gray-50 transition-colors';
         
         tr.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${hill.name}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.length} km</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${hill.height} m</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-theme-primary">${index + 1}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-theme-primary">${hill.name}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-theme-primary text-right">${hill.length} km</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-theme-primary text-right">${hill.height} m</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-theme-primary text-right">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${hill.gradient > 8 ? 'bg-red-100 text-red-800' : hill.gradient > 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}">
                     ${hill.gradient}%
                 </span>

@@ -1,58 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
-    <!-- Base background -->
-    <rect width="100%" height="100%" fill="#ffffff"/>
-    
-    <!-- Topographic lines - outer contours -->
-    <path d="M0,400 
-             C200,350 400,500 600,450 
-             S1000,300 1200,400
-             M300,0 
-             C400,100 500,50 600,150
-             S800,100 900,200
-             M100,800
-             C300,700 500,750 700,650
-             S900,700 1100,600"
-          fill="none" 
-          stroke="#e6f2ff" 
-          stroke-width="2"
-          opacity="0.6"/>
-    
-    <!-- Medium detail contours -->
-    <path d="M0,200
-             C150,250 300,150 450,200
-             S750,250 900,150
-             M150,600
-             C300,550 450,650 600,600
-             S900,550 1050,650"
-          fill="none"
-          stroke="#cce6ff"
-          stroke-width="1.5"
-          opacity="0.5"/>
-    
-    <!-- Fine detail contours -->
-    <path d="M0,300
-             C100,280 200,320 300,300
-             S500,280 600,300
-             M400,500
-             C500,480 600,520 700,500
-             S900,480 1000,500
-             M200,700
-             C300,680 400,720 500,700
-             S700,680 800,700"
-          fill="none"
-          stroke="#99ccff"
-          stroke-width="1"
-          opacity="0.4"/>
-          
-    <!-- Finest detail lines -->
-    <path d="M100,150
-             C200,130 300,170 400,150
-             M600,350
-             C700,330 800,370 900,350
-             M300,650
-             C400,630 500,670 600,650"
-          fill="none"
-          stroke="#80bfff"
-          stroke-width="0.5"
-          opacity="0.3"/>
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .contour-line {
+            fill: none;
+            stroke: #000;
+            stroke-width: 0.5;
+            opacity: 0.3;
+        }
+    </style>
+    <g>
+        <\!-- Contour Lines -->
+        <path class="contour-line" d="M0,50 C125,75 250,25 375,50 S500,25 500,25" />
+        <path class="contour-line" d="M0,100 C125,150 250,75 375,120 S500,75 500,75" />
+        <path class="contour-line" d="M0,150 C125,200 250,125 375,170 S500,125 500,125" />
+        <path class="contour-line" d="M0,200 C125,250 250,180 375,220 S500,180 500,180" />
+        <path class="contour-line" d="M0,250 C125,300 250,220 375,270 S500,220 500,220" />
+        <path class="contour-line" d="M0,300 C125,350 250,280 375,320 S500,280 500,280" />
+        <path class="contour-line" d="M0,350 C125,400 250,320 375,380 S500,330 500,330" />
+        <path class="contour-line" d="M0,400 C125,450 250,370 375,420 S500,380 500,380" />
+        <path class="contour-line" d="M0,450 C125,500 250,420 375,470 S500,430 500,430" />
+        <path class="contour-line" d="M0,500 C125,550 250,470 375,520 S500,480 500,480" />
+        
+        <\!-- Add some diagonal lines for texture -->
+        <path class="contour-line" d="M0,0 C166,166 333,333 500,500" />
+        <path class="contour-line" d="M100,0 C200,100 300,200 400,300" />
+        <path class="contour-line" d="M0,100 C100,200 200,300 300,400" />
+        <path class="contour-line" d="M200,0 C300,100 400,200 500,300" />
+        <path class="contour-line" d="M0,200 C100,300 200,400 300,500" />
+        <path class="contour-line" d="M300,0 C370,70 430,130 500,200" />
+        <path class="contour-line" d="M0,300 C70,370 130,430 200,500" />
+        <path class="contour-line" d="M400,0 C433,33 466,66 500,100" />
+        <path class="contour-line" d="M0,400 C33,433 66,466 100,500" />
+    </g>
 </svg>

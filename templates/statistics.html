@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}Hill Statistics | Danish Hills{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-theme-primary mb-2">Hill Statistics</h1>
+        <p class="text-theme-secondary text-lg max-w-2xl mx-auto">Explore comprehensive statistics about Denmark's hills and gradients.</p>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="bg-theme-card rounded-xl shadow-lg p-6 gradient-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-theme-secondary text-sm font-medium">Total Hills</h3>
+                    <p class="text-theme-primary text-3xl font-bold mt-1">{{ total_roads }}</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-theme-card rounded-xl shadow-lg p-6 gradient-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-theme-secondary text-sm font-medium">Total Distance</h3>
+                    <p class="text-theme-primary text-3xl font-bold mt-1">{{ total_length|round(1) }} km</p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-theme-card rounded-xl shadow-lg p-6 gradient-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-theme-secondary text-sm font-medium">Average Gradient</h3>
+                    <p class="text-theme-primary text-3xl font-bold mt-1">{{ avg_gradient|round(1) }}%</p>
+                </div>
+                <div class="bg-yellow-100 p-3 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-theme-card rounded-xl shadow-lg p-6 gradient-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-theme-secondary text-sm font-medium">Max Gradient</h3>
+                    <p class="text-theme-primary text-3xl font-bold mt-1">{{ max_gradient|round(1) }}%</p>
+                </div>
+                <div class="bg-red-100 p-3 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Statistics Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Longest Hills -->
+        <div class="bg-theme-card rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-blue-500 text-white px-6 py-4">
+                <h2 class="text-xl font-bold">Longest Hills</h2>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    {% for hill in longest_hills %}
+                    <div class="flex items-center justify-between border-b border-theme pb-4">
+                        <div>
+                            <h3 class="text-theme-primary font-semibold">{{ hill.name }}</h3>
+                            <p class="text-theme-secondary text-sm">{{ hill.location }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-theme-primary font-bold">{{ hill.length }} km</p>
+                            <p class="text-theme-secondary text-sm">{{ hill.gradient }}% gradient</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="/map?filter=longest" class="inline-flex items-center text-blue-500 hover:text-blue-700 font-medium">
+                        View all on map
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Steepest Hills -->
+        <div class="bg-theme-card rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-red-500 text-white px-6 py-4">
+                <h2 class="text-xl font-bold">Steepest Hills</h2>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    {% for hill in steepest_hills %}
+                    <div class="flex items-center justify-between border-b border-theme pb-4">
+                        <div>
+                            <h3 class="text-theme-primary font-semibold">{{ hill.name }}</h3>
+                            <p class="text-theme-secondary text-sm">{{ hill.location }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-theme-primary font-bold">{{ hill.gradient }}%</p>
+                            <p class="text-theme-secondary text-sm">{{ hill.length }} km</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="/map?filter=steepest" class="inline-flex items-center text-red-500 hover:text-red-700 font-medium">
+                        View all on map
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Highest Hills -->
+        <div class="bg-theme-card rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-green-500 text-white px-6 py-4">
+                <h2 class="text-xl font-bold">Highest Hills</h2>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    {% for hill in highest_hills %}
+                    <div class="flex items-center justify-between border-b border-theme pb-4">
+                        <div>
+                            <h3 class="text-theme-primary font-semibold">{{ hill.name }}</h3>
+                            <p class="text-theme-secondary text-sm">{{ hill.location }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-theme-primary font-bold">{{ hill.height }} m</p>
+                            <p class="text-theme-secondary text-sm">{{ hill.gradient }}% gradient</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="/map?filter=highest" class="inline-flex items-center text-green-500 hover:text-green-700 font-medium">
+                        View all on map
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Visualization Section -->
+    <div class="mt-12">
+        <div class="bg-theme-card rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-theme-primary mb-6">Gradient Distribution</h2>
+            <div class="h-80">
+                <canvas id="gradientChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gradient Distribution Chart
+    const ctx = document.getElementById('gradientChart').getContext('2d');
+    
+    // Random data for now - this would be replaced with actual data from backend
+    const gradientData = {
+        labels: ['0-2%', '2-4%', '4-6%', '6-8%', '8-10%', '10-12%', '12%+'],
+        datasets: [{
+            label: 'Number of Hills',
+            data: [{{ total_roads // 7 }}, {{ total_roads // 6 }}, {{ total_roads // 5 }}, {{ total_roads // 4 }}, {{ total_roads // 6 }}, {{ total_roads // 10 }}, {{ total_roads // 20 }}],
+            backgroundColor: [
+                'rgba(74, 222, 128, 0.6)',
+                'rgba(250, 204, 21, 0.6)',
+                'rgba(251, 146, 60, 0.6)',
+                'rgba(248, 113, 113, 0.6)',
+                'rgba(239, 68, 68, 0.6)',
+                'rgba(220, 38, 38, 0.6)',
+                'rgba(185, 28, 28, 0.6)'
+            ],
+            borderColor: [
+                'rgba(74, 222, 128, 1)',
+                'rgba(250, 204, 21, 1)',
+                'rgba(251, 146, 60, 1)',
+                'rgba(248, 113, 113, 1)',
+                'rgba(239, 68, 68, 1)',
+                'rgba(220, 38, 38, 1)',
+                'rgba(185, 28, 28, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    
+    const gradientChart = new Chart(ctx, {
+        type: 'bar',
+        data: gradientData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Hills'
+                    },
+                    grid: {
+                        color: 'rgba(200, 200, 200, 0.2)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Gradient Range'
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+    
+    // Update chart colors based on theme
+    function updateChartColors() {
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        gradientChart.options.scales.y.grid.color = isDark ? 'rgba(100, 116, 139, 0.2)' : 'rgba(200, 200, 200, 0.2)';
+        gradientChart.options.scales.x.ticks = {
+            color: isDark ? '#94a3b8' : '#64748b'
+        };
+        gradientChart.options.scales.y.ticks = {
+            color: isDark ? '#94a3b8' : '#64748b'
+        };
+        gradientChart.options.scales.x.title.color = isDark ? '#f8fafc' : '#1e293b';
+        gradientChart.options.scales.y.title.color = isDark ? '#f8fafc' : '#1e293b';
+        
+        gradientChart.update();
+    }
+    
+    // Call initially to set correct colors
+    updateChartColors();
+    
+    // Listen for theme changes
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            // Small delay to let theme change first
+            setTimeout(updateChartColors, 50);
+        });
+    }
+});
+</script>
+{% endblock %}

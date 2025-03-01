@@ -1,4 +1,4 @@
-<nav class="bg-white shadow sticky top-0 z-50">
+<nav class="nav-bg shadow sticky top-0 z-50">
   <div class="w-4/5 mx-auto">
     <div class="flex justify-between h-16">
       <div class="flex items-center">
@@ -6,29 +6,29 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
           </svg>
-          <span class="text-xl font-bold text-gray-900">Danish<span class="text-blue-500">Hills</span></span>
+          <span class="text-xl font-bold text-theme-primary">Danish<span class="text-blue-500">Hills</span></span>
         </a>
         
         <div class="hidden md:flex md:ml-8 space-x-8">
-          <a href="/" class="text-gray-900 hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/' else '' }}">
+          <a href="/" class="text-theme-primary hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/' else '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
             </svg>
             Home
           </a>
-          <a href="/map" class="text-gray-900 hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/map' else '' }}">
+          <a href="/map" class="text-theme-primary hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/map' else '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
             </svg>
             Map View
           </a>
-          <a href="/statistics" class="text-gray-900 hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/statistics' else '' }}">
+          <a href="/statistics" class="text-theme-primary hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/statistics' else '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
             </svg>
             Statistics
           </a>
-          <a href="/about" class="text-gray-900 hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/about' else '' }}">
+          <a href="/about" class="text-theme-primary hover:text-blue-600 border-transparent border-b-2 hover:border-blue-500 font-medium flex items-center h-16 transition-colors {{ 'text-blue-600 border-blue-500' if request.path == '/about' else '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
             </svg>
@@ -41,9 +41,9 @@
         <div class="relative">
           <input type="text" 
                  placeholder="Quick search..." 
-                 class="bg-gray-100 text-gray-800 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors">
+                 class="bg-theme-card text-theme-primary rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
           <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-theme-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -54,7 +54,7 @@
         </a>
       </div>
       
-      <button type="button" class="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 flex items-center" id="mobile-menu-button" aria-expanded="false">
+      <button type="button" class="md:hidden p-2 rounded-md text-theme-secondary hover:bg-theme-card flex items-center" id="mobile-menu-button" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -65,7 +65,7 @@
   
   <div class="hidden md:hidden w-4/5 mx-auto" id="mobile-menu">
     <div class="pt-2 pb-3 space-y-1">
-      <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 bg-blue-50 {{ 'text-blue-600 bg-blue-50' if request.path == '/' else 'text-gray-900 hover:bg-gray-50' }}">
+      <a href="/" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-theme-card' if request.path == '/' else 'text-theme-primary hover:bg-theme-card' }}">
         <div class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
@@ -73,7 +73,7 @@
           Home
         </div>
       </a>
-      <a href="/map" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-blue-50' if request.path == '/map' else 'text-gray-900 hover:bg-gray-50' }}">
+      <a href="/map" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-theme-card' if request.path == '/map' else 'text-theme-primary hover:bg-theme-card' }}">
         <div class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
@@ -81,7 +81,7 @@
           Map View
         </div>
       </a>
-      <a href="/statistics" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-blue-50' if request.path == '/statistics' else 'text-gray-900 hover:bg-gray-50' }}">
+      <a href="/statistics" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-theme-card' if request.path == '/statistics' else 'text-theme-primary hover:bg-theme-card' }}">
         <div class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
@@ -89,7 +89,7 @@
           Statistics
         </div>
       </a>
-      <a href="/about" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-blue-50' if request.path == '/about' else 'text-gray-900 hover:bg-gray-50' }}">
+      <a href="/about" class="block px-3 py-2 rounded-md text-base font-medium {{ 'text-blue-600 bg-theme-card' if request.path == '/about' else 'text-theme-primary hover:bg-theme-card' }}">
         <div class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
