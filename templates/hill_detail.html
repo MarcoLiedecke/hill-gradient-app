@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+{% block title %}Hill Details - Denmark Hill Gradient Analyzer{% endblock %}
+
+{% block styles %}
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 flex-grow">
+    <div id="hillDetails" class="bg-white rounded-lg shadow-md p-6">
+        <div class="animate-pulse">
+            <div class="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="h-64 bg-gray-200 rounded"></div>
+                <div class="h-64 bg-gray-200 rounded"></div>
+            </div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mt-6"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2 mt-4"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Mapbox token
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+    
+    // Hill ID from Flask template
+    const hillId = {{ hill_id }};
+    
+    // Load hill details
+    document.addEventListener('DOMContentLoaded', function() {
+        loadHillDetails(hillId);
+    });
+    
+    // Load hill details
+    function loadHillDetails(id) {
+        fetch(`/api/hills/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                // Fill in the details
+                renderHillDetails(data);
+            })
+            .catch(error => {
+                console.error('Error loading hill details:', error);
+                document.getElementById('hillDetails').innerHTML = `
+                    <div class="text-center py-8">
+                        <h2 class="text-2xl font-bold text-red-600 mb-2">Error</h2>
+                        <p>Failed to load hill details. Please try again later.</p>
+                        <a href="/map" class="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                            Return to Map
+                        </a>
+                    </div>
+                `;
+            });
+    }
+    
+    // Render hill details
+    function renderHillDetails(hill) {
+        const container = document.getElementById('hillDetails');
+        
+        // Format hill name
+        const hillName = hill.name || `Hill ${hill.id}`;
+        
+        // Create the HTML
+        container.innerHTML = `
+            <div class="mb-6">
+                <a href="/map" class="text-blue-600 hover:underline">&larr; Back to Map</a>
+            </div>
+            
+            <h1 class="text-2xl font-bold mb-2">${hillName}</h1>
+            
+            <div class="text-sm text-gray-500 mb-6">
+                Category ${hill.category} | ${hill.region}
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Map -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden h-64 lg:h-96">
+                    <div id="hillMap" class="w-full h-full"></div>
+                </div>
+                
+                <!-- Elevation Profile -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden p-4 h-64 lg:h-96">
+                    <h3 class="text-lg font-semibold mb-2">Elevation Profile</h3>
+                    <div class="h-5/6">
+                        <canvas id="elevationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hill Statistics -->
+            <div class="bg-gray-100 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4">Hill Statistics</h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Length</div>
+                        <div class="text-xl font-bold">${hill.length_m.toFixed(1)} m</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Avg. Gradient</div>
+                        <div class="text-xl font-bold">${hill.avg_gradient.toFixed(1)}%</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Max. Gradient</div>
+                        <div class="text-xl font-bold">${hill.max_gradient.toFixed(1)}%</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Elevation Gain</div>
+                        <div class="text-xl font-bold">${hill.elevation_gain.toFixed(1)} m</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elevation Data -->
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">Elevation Data</h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Start Elevation</div>
+                        <div class="text-xl font-bold">${hill.start_elevation.toFixed(1)} m</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">End Elevation</div>
+                        <div class="text-xl font-bold">${hill.end_elevation.toFixed(1)} m</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="text-sm text-gray-500">Net Elevation Change</div>
+                        <div class="text-xl font-bold">${(hill.end_elevation - hill.start_elevation).toFixed(1)} m</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Initialize map
+        initMap(hill);
+        
+        // Initialize elevation chart
+        initElevationChart(hill.elevation_profile);
+    }
+    
+    // Initialize map with hill geometry
+    function initMap(hill) {
+        const map = new mapboxgl.Map({
+            container: 'hillMap',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: [10.4, 55.4], // Will be adjusted
+            zoom: 12
+        });
+        
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl());
+        
+        map.on('load', function() {
+            // Add hill source
+            map.addSource('hill', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: hill.geometry,
+                    properties: {
+                        id: hill.id,
+                        name: hill.name,
+                        category: hill.category,
+                        avg_gradient: hill.avg_gradient
+                    }
+                }
+            });
+            
+            // Add hill layer
+            map.addLayer({
+                id: 'hill-line',
+                type: 'line',
+                source: 'hill',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': getCategoryColor(hill.category),
+                    'line-width': 5
+                }
+            });
+            
+            // Fit map to the hill geometry
+            const bounds = new mapboxgl.LngLatBounds();
+            
+            // Add all coordinates to the bounds
+            if (hill.geometry.type === 'LineString') {
+                hill.geometry.coordinates.forEach(coord => {
+                    bounds.extend(coord);
+                });
+                
+                // Fit map to bounds
+                map.fitBounds(bounds, {
+                    padding: 40,
+                    duration: 1000
+                });
+            }
+            
+            // Add start and end markers
+            if (hill.geometry.type === 'LineString' && hill.geometry.coordinates.length > 0) {
+                // Start marker
+                const startCoord = hill.geometry.coordinates[0];
+                new mapboxgl.Marker({ color: '#00FF00' })
+                    .setLngLat(startCoord)
+                    .addTo(map);
+                    
+                // End marker
+                const endCoord = hill.geometry.coordinates[hill.geometry.coordinates.length - 1];
+                new mapboxgl.Marker({ color: '#FF0000' })
+                    .setLngLat(endCoord)
+                    .addTo(map);
+            }
+        });
+    }
+    
+    // Initialize elevation profile chart
+    function initElevationChart(elevationProfile) {
+        if (!elevationProfile || elevationProfile.length < 2) {
+            document.getElementById('elevationChart').parentNode.innerHTML = 
+                '<div class="flex h-full items-center justify-center text-gray-500">No elevation data available</div>';
+            return;
+        }
+        
+        // Prepare data for Chart.js
+        const distances = elevationProfile.map(point => point[0]);
+        const elevations = elevationProfile.map(point => point[1]);
+        
+        // Create chart
+        const ctx = document.getElementById('elevationChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: distances,
+                datasets: [{
+                    label: 'Elevation (m)',
+                    data: elevations,
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.1,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Distance (m)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Elevation (m)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return `Distance: ${tooltipItems[0].label}m`;
+                            },
+                            label: function(context) {
+                                return `Elevation: ${context.raw}m`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Get color for hill category
+    function getCategoryColor(category) {
+        const colors = {
+            'HC': '#FF0000', // Hors Categorie - Red
+            '1': '#FF6600',  // Category 1 - Orange
+            '2': '#FFCC00',  // Category 2 - Yellow
+            '3': '#00CC00',  // Category 3 - Green
+            '4': '#0066FF'   // Category 4 - Blue
+        };
+        
+        return colors[category] || '#808080';
+    }
+</script>
+{% endblock %}
